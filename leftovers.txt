@@ -1,10 +1,10 @@
-
 //
 // Resource Path
 //
 
 id resourcePath =
     [[NSBundle mainBundle] pathForResource:@"data" ofType:@"z"];
+
 
 //
 // Hidden title
@@ -13,19 +13,17 @@ id resourcePath =
 | NSFullSizeContentViewWindowMask | NSWindowTitleHidden
 [window setTitlebarAppearsTransparent:YES];
 
+
 //
 // Mouse lock
 //
 
-NSRect globalRect = [window
-    convertRectToScreen:NSMakeRect([view frame].size.width / 2,
-                                   [view frame].size.height / 2, 0, 0)];
-CGWarpMouseCursorPosition(CGPointMake(
-    globalRect.origin.x,
-    CGDisplayBounds(CGMainDisplayID()).size.height -
-    globalRect.origin.y));
-[NSCursor hide];
+NSPoint point = [window convertPointToScreen:NSZeroPoint isFlipped:true];
+point.y = [[window screen] frame].size.height - point.y;
+CGWarpMouseCursorPosition(point);
 CGAssociateMouseAndMouseCursorPosition(false);
+[NSCursor hide];
+
 
 //
 // Mouse
@@ -45,6 +43,7 @@ if ([event type] == NSMouseMoved)
                                             contentRect.size.height -
                                                 pos.y - 1]];
 }
+
 
 //
 // Timer
